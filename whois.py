@@ -1,7 +1,31 @@
 import pythonwhois
+import sys
+import json
 
-data=pythonwhois.get_whois("google.com")
+url=sys.argv[1]
 
-print data
+rf=open(url, 'r')
+d=rf.readline()
+data=pythonwhois.get_whois(d)
+
+def data_handler(obj):#this funciton in order to catch timeerror
+	if hasattr(obj, 'isoformat'):
+		return obj.isoformat()
+	else:
+		raise TypeError
+
+#data=pythonwhois.get_whois(d)
+
+jsonString=json.dumps(data, default=data_handler)
+
+print jsonString
+
+wf=open(WriteFile, 'w')
+wf.write(jsonString)
+
+rf.close()
+wf.close()
+
+
 
 
